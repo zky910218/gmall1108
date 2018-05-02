@@ -1,7 +1,7 @@
 package cn.nosnow.gmall.usermanage.controller;
 
-import cn.nosnow.gmall.usermanage.bean.UserInfo;
-import cn.nosnow.gmall.usermanage.service.UserService;
+import cn.nosnow.gmall.bean.UserInfo;
+import cn.nosnow.gmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

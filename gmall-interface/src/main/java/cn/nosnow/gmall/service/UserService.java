@@ -1,6 +1,7 @@
-package cn.nosnow.gmall.usermanage.service;
+package cn.nosnow.gmall.service;
 
-import cn.nosnow.gmall.usermanage.bean.UserInfo;
+import cn.nosnow.gmall.bean.UserAddress;
+import cn.nosnow.gmall.bean.UserInfo;
 
 import java.util.List;
 
@@ -41,6 +42,13 @@ public interface UserService {
      * @param userInfo
      */
     void updateUserInfo(UserInfo userInfo);
+
+    /**
+     * 查询用户地址表信息
+     * @param userId
+     * @return
+     */
+    List<UserAddress> getUserAddressList(String userId);
 
 
 

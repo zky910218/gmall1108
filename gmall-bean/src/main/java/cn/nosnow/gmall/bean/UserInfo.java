@@ -1,4 +1,4 @@
-package cn.nosnow.gmall.usermanage.bean;
+package cn.nosnow.gmall.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @author bingHeng
  * @dat 2018.04.30
  * bean类中的注解为通用Mapper中的注解
+ * user_info表对应的实体类
  */
 public class UserInfo implements Serializable {
 

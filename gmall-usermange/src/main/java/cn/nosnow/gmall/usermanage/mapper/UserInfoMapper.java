@@ -1,6 +1,6 @@
 package cn.nosnow.gmall.usermanage.mapper;
 
-import cn.nosnow.gmall.usermanage.bean.UserInfo;
+import cn.nosnow.gmall.bean.UserInfo;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

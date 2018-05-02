@@ -1,10 +1,12 @@
 package cn.nosnow.gmall.usermanage.service.impl;
 
-import cn.nosnow.gmall.usermanage.bean.UserInfo;
+import cn.nosnow.gmall.bean.UserAddress;
+import cn.nosnow.gmall.bean.UserInfo;
+import cn.nosnow.gmall.usermanage.mapper.UserAddressMapper;
 import cn.nosnow.gmall.usermanage.mapper.UserInfoMapper;
-import cn.nosnow.gmall.usermanage.service.UserService;
+import cn.nosnow.gmall.service.UserService;
+import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -15,11 +17,15 @@ import java.util.List;
  * @date 2018.04.28
  */
 
+/**dubbo方式服务端注解*/
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private UserAddressMapper userAddressMapper;
 
     @Override
     public List<UserInfo> getUserInfoListAll() {
@@ -109,4 +115,15 @@ public class UserServiceImpl implements UserService {
          */
         userInfoMapper.updateByExampleSelective(userInfo, example);
     }
+
+    @Override
+    public List<UserAddress> getUserAddressList(String userId) {
+        List<UserAddress> addressList = null;
+        UserAddress userAddress = new UserAddress();
+        userAddress.setId(userId);
+        addressList = userAddressMapper.select(userAddress);
+        return addressList;
+    }
+
+
 }
