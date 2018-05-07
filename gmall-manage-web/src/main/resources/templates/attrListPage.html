@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--
+        bar:'#tb' 是引用了另一个工具栏，这个工具栏要额外的进行定义
+    -->
+    <table id="dg" class="easyui-datagrid" title="属性列表" data-options="singleSelect:true ,method:'get',toolbar:'#tb'">
+        <thead>
+        <!--
+
+        -->
+        <tr>
+            <th data-options="field:'id'" width="20%">属性id </th>
+            <th data-options="field:'name'" width="80%">属性名</th>
+        </tr>
+        </thead>
+    </table>
+
+    <!--
+        被属性列表引用的div工具栏
+    -->
+    <div id="tb" style="padding:5px;height:auto">
+        <div style="margin-bottom:5px">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        </div>
+        <div>
+            <!--
+                一级菜单变化会动态的改变二级菜单的内容
+                二级菜单变化会动态的改变三级菜单的内容
+                三级菜单变化会动态的改变列表显示的属性
+                ps： 页面初始化的时候就要执行的方法
+
+                一级菜单要加载的内容，一般情况下要写js实现，但是利用easyui可以直接将这种动态变化绑定到元素上，给下拉菜单绑定一个data-options即可。
+
+                data-option标签中的内容：
+                    url：通过此链接利用ajax获得json数据
+                    valueField：下拉选项的值要绑定json中的元素
+                    textField：下拉选项的显示内容要绑定json中的元素
+                    onSelect：选中某个下拉选项会触发的方法
+                    .combobox（'clear'） : 清空下拉菜单
+                    .combobox('reload','xxx'); 让某个下拉菜单按照路径加载数据
+            -->
+            一级分类：
+            <select id="ctg1ForAttrList"  class="easyui-combobox"  style="width:100px"
+                    data-options="
+                                valueField:'id',
+                                textField:'name',
+                                url:'getCatalog1',
+                                onSelect:function(rec){
+                                    $('#ctg2ForAttrList').combobox('clear');
+                                    $('#ctg3ForAttrList').combobox('clear');
+                                    $('#ctg2ForAttrList').combobox('reload','getCatalog2?catalog1Id='+rec.id);
+                                                        }">
+            </select>
+            二级分类：
+            <select name="ctg2ForAttrList" id="ctg2ForAttrList"  class="easyui-combobox" style="width:100px"
+                    data-options="
+                                valueField:'id',
+                                textField:'name',
+                                onSelect:function(rec){
+                                    $('#ctg3ForAttrList').combobox('clear');
+                                    $('#ctg3ForAttrList').combobox('reload','getCatalog3?catalog2Id='+rec.id);
+                                                        }">
+            </select>
+            三级分类：
+            <select name="ctg3ForAttrList" id="ctg3ForAttrList"  class="easyui-combobox" style="width:100px"
+                    data-options="
+                                valueField:'id',
+                                textField:'name'" >
+            </select>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="javascript:reloadAttrList()">刷新属性列表</a>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    function reloadAttrList() {
+        var ctg3val=$("#ctg3ForAttrList").combobox('getValue');
+        $('#dg').datagrid({url:'getAttrList?catalog3Id='+ctg3val});
+    }
+</script>
+</html>
