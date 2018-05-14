@@ -26,4 +26,7 @@ public interface ManageService {
     /**根据三级菜单id， 查询BaseAttrInfo数据*/
     List<BaseAttrInfo> getAttrList(String catalog3Id);
 
+    /** 保存数据 */
+    void saveAttrInfo(BaseAttrInfo baseAttrInfo);
+
 }
