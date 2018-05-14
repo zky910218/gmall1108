@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
          */
 
         /**
-         * insertSelective 如果传过来的参数为null， 则调用此方法将不会讲null值插入进数据库中
+         * insertSelective 如果传过来的参数为null， 则调用此方法将不会将null值插入进数据库中
          * 向数据库插入数据忽略空值
          * 建议使用此种方法
          */
