@@ -1,8 +1,8 @@
 package cn.nosnow.gmall.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Think on 2018/5/7.
@@ -10,10 +10,13 @@ import java.io.Serializable;
  * @date 2018.05.07
  *
  * 属性表
+ *
+ * 其中@Transient表示该Bean类对应的数据库表中不包含的字段，这个注解必须要加上否则报错
  */
 public class BaseAttrInfo implements Serializable {
 
     /**主键 编号*/
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column
     private String id;
@@ -26,9 +29,12 @@ public class BaseAttrInfo implements Serializable {
     @Column
     private String catalog3Id;
 
-
     @Column
     private String isEnabled;
+
+    /**属性和属性值是一对多的关系，so属性的bean中增加一个列表元素*/
+    @Transient
+    private List<BaseAttrValue> attrValueList;
 
     public BaseAttrInfo() {
     }
@@ -70,5 +76,13 @@ public class BaseAttrInfo implements Serializable {
 
     public void setIsEnabled(String isEnabled) {
         this.isEnabled = isEnabled;
+    }
+
+    public List<BaseAttrValue> getAttrValueList() {
+        return attrValueList;
+    }
+
+    public void setAttrValueList(List<BaseAttrValue> attrValueList) {
+        this.attrValueList = attrValueList;
     }
 }
