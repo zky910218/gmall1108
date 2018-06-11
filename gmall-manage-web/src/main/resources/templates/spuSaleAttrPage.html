@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div id="spuSaleAttrDlg" class="easyui-dialog" title="销售属性" style="width:417px;height:368px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true, buttons:'#saleAttrBnt', closed:'true' ">
+
+    <!--
+        下拉菜单
+        data-options 属性说明：
+        数据来源于：base_sale_attr表
+        此表中的字段为：id 、name
+    -->
+    销售属性：<select id="saleAttrValueSelect" class="easyui-combobox" name="dept" style="width:200px;"
+            data-options="valueField:'id',textField:'name',url:'/baseSaleAttrList'">
+
+        <!--如果是静态的则直接可以在此处写option 标签， 如果该下拉列表从后台数据库中获取则需要在select标签中增加data-options属性-->
+      <!--  <option value="aa">aitem1</option>
+        <option>bitem2</option>-->
+    </select>
+    <br /><br />
+
+    <!--
+        数据表格：表头添加有两种方法，一种是th标签，另外一种是通过js添加，推荐使用js添加
+    -->
+    <table id="saleAttrValueDg" title="销售属性值列表" class="easyui-datagrid" style="width:400px;height:250px"
+           data-options="fitColumns:true,singleSelect:true, toolbar:'#saleAttrValue_tb' ">
+<!--        <thead>
+        <tr>
+            <th data-options="field:'code',width:100">编码</th>
+            <th data-options="field:'name',width:100">名称</th>
+            <th data-options="field:'price',width:100,align:'right'">价格</th>
+        </tr>
+        </thead>-->
+    </table>
+
+    <!--增加两个按钮-->
+    <div id="saleAttrValue_tb">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addSaleAttrValue()">添加销售属性值</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteSaleAttrValue()">删除销售属性值</a>
+    </div>
+
+</div>
+
+<div id="saleAttrBnt">
+    <a href="#" class="easyui-linkbutton" onclick="saveSaleAttrValue()">保存</a>
+    <a href="#" class="easyui-linkbutton" onclick="closeSaleAttrValue()">关闭</a>
+</div>
+
+<script type="text/javascript">
+    function initSpuSaleAttrDlg(saleAttr) {
+       $('#spuSaleAttrDlg').dialog('open');
+       initSpuSaleAttrValueDg(saleAttr);
+    }
+
+    /**初始化表格*/
+    function initSpuSaleAttrValueDg(saleAttr) {
+        var saleAttrValueDg = $('#saleAttrValueDg').datagrid('load', {});
+        saleAttrValueDg.datagrid({
+            columns:[[
+                { field:'id',title:'销售属性值Id',width:'30%'},
+                { field:'saleAttrValueName',title:'销售属性值名称',width:'70%',
+                    editor:{type:'validatebox', options:'required:true'} // 此处文本框设置为可编辑的必填项
+                }
+            ]],
+            onDblClickCell: function(index,field,value){ // 为上面设置的可编辑的单元格，双击单元格可编辑事件
+                $(this).datagrid('beginEdit', index);
+                $("input.datagrid-editable-input").val(value).bind("blur", function (evt) {
+                    saleAttrValueDg.datagrid('endEdit', index);
+                });
+            }
+        });
+
+        /**如果在前一步动作用户点击的是编辑修改按钮，则需要将值载入*/
+        if(saleAttr) {
+            $('#saleAttrValueSelect').combobox('select', saleAttr.saleAttrId); // 载入下拉菜单值
+            saleAttrValueDg.datagrid('loadData', saleAttr.saleAttrValueList); // 属性值加载到表格中
+        }
+    }
+
+    /**添加销售属性值*/
+    function addSaleAttrValue() {
+        var saleAttrValueDg = $('#saleAttrValueDg');
+        saleAttrValueDg.datagrid('appendRow', {}); // 增加一行空白行
+    }
+
+    /**删除销售属性值*/
+    function deleteSaleAttrValue() {
+        var saleAttrValueDg = $('#saleAttrValueDg');
+        var row = saleAttrValueDg.datagrid('getSelected'); // 得到当前行的对象
+        var index = saleAttrValueDg.datagrid('getRowIndex',row); // 从当前行对象得到下标索引
+        saleAttrValueDg.datagrid('deleteRow', index); // 删除当前行
+    }
+
+    /**保存按钮： 此处保存是将数据保存到控件中，并非保存到数据库*/
+    function saveSaleAttrValue() {
+        var spuSaleAttrDg =   $('#spuSaleAttrDg');
+        /**得到用户下拉选的值*/
+        var saleAttrName = $('#saleAttrValueSelect').combobox('getText');
+        var saleAttrId = $('#saleAttrValueSelect').combobox('getValue');
+
+        /**得到数据表格中的所有值*/
+        var dgData = $('#saleAttrValueDg').datagrid('getData'); // dgData 是一个json串
+
+        /**保存之前删除重复数据*/
+        var index = spuSaleAttrDg.datagrid('getRowIndex', saleAttrId);
+        if(index >= 0) {
+            spuSaleAttrDg.datagrid('deleteRow', index);
+        }
+
+        /**将得到的数据存入到spuInfoPage.html页面*/
+        spuSaleAttrDg.datagrid('appendRow', {saleAttrId:saleAttrId, saleAttrName: saleAttrName,saleAttrValueList:dgData});
+
+        /**关闭窗口*/
+        $('#spuSaleAttrDlg').dialog('close');
+    }
+
+    /**关闭按钮*/
+    function closeSaleAttrValue() {
+        $('#spuSaleAttrDlg').dialog('close');
+    }
+</script>
+</html>
