@@ -1,9 +1,6 @@
 package cn.nosnow.gmall.service;
 
-import cn.nosnow.gmall.bean.BaseAttrInfo;
-import cn.nosnow.gmall.bean.BaseCatalog1;
-import cn.nosnow.gmall.bean.BaseCatalog2;
-import cn.nosnow.gmall.bean.BaseCatalog3;
+import cn.nosnow.gmall.bean.*;
 
 import java.util.List;
 
@@ -26,7 +23,20 @@ public interface ManageService {
     /**根据三级菜单id， 查询BaseAttrInfo数据*/
     List<BaseAttrInfo> getAttrList(String catalog3Id);
 
-    /** 保存数据 */
+    /**保存数据*/
     void saveAttrInfo(BaseAttrInfo baseAttrInfo);
+
+    /**获取商品List*/
+    List<SpuInfo> getSpuInfoList(SpuInfo spuInfo);
+
+    /**销售属性页面下拉列表sql*/
+    List<BaseSaleAttr> getBaseSaleAttrList();
+
+    /***
+     * 保存spu界面数据
+     * @param spuInfo
+     * @return
+     */
+    void saveSpuInfo(SpuInfo spuInfo);
 
 }
