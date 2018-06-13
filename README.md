@@ -10,3 +10,4 @@ Welcome gmall1108  <br />
     
 截至2018年06月13日完成功能如下：<br />
     构建sku页面，初始化sku平台属性、初始化sku图片列表、保存sku前台页面、保存sku后台数据<br />
+    增加gmall-item-web模块，应用新技术：Thymeleaf<br />
