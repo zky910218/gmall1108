@@ -2,6 +2,7 @@ package cn.nosnow.gmall.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -27,6 +28,9 @@ public class SpuSaleAttrValue implements Serializable {
     /**销售属性值名称*/
     @Column
     String saleAttrValueName;
+
+    @Transient
+    String isChecked;
 
     public SpuSaleAttrValue() {
     }
@@ -68,5 +72,13 @@ public class SpuSaleAttrValue implements Serializable {
 
     public void setSaleAttrValueName(String saleAttrValueName) {
         this.saleAttrValueName = saleAttrValueName;
+    }
+
+    public String getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(String isChecked) {
+        this.isChecked = isChecked;
     }
 }

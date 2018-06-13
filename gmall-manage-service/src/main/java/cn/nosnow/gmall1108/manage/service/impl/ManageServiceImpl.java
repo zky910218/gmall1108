@@ -220,4 +220,24 @@ public class ManageServiceImpl implements ManageService {
     public List<SkuInfo> getSkuInfoListBySpu(String spuId) {
         return skuInfoMapper.selectSkuInfoListBySpu(Long.parseLong(spuId));
     }
+
+    @Override
+    public SkuInfo getSkuInfo(String skuId) {
+        SkuImage skuImageQuery = new SkuImage();
+        skuImageQuery.setSkuId(skuId);
+        List<SkuImage> skuImageList = skuImageMapper.select(skuImageQuery);
+        SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
+        skuInfo.setSkuImageList(skuImageList);
+        return skuInfo;
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(SkuInfo skuInfo) {
+        return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(Long.parseLong(skuInfo.getId()), Long.parseLong(skuInfo.getSpuId()));
+    }
+
+    @Override
+    public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId) {
+        return skuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(Long.parseLong(spuId));
+    }
 }

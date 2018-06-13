@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.nosnow.gmall1108.manage.mapper.SkuSaleAttrValueMapper">
+    
+    <select id="selectSkuSaleAttrValueListBySpu" parameterType="long" resultMap="skuSaleAttrValueMap">
+        SELECT skv.*
+        FROM sku_sale_attr_value skv
+        INNER JOIN sku_info  sk ON skv.sku_id =sk.id
+        WHERE sk.spu_id=#{spuId}
+        ORDER BY skv.sku_id, skv.sale_attr_id
+    </select>
+    <resultMap id="skuSaleAttrValueMap" type="cn.nosnow.gmall.bean.SkuSaleAttrValue" autoMapping="true">
+        <result property="id" column="id"/>
+    </resultMap>
+</mapper>

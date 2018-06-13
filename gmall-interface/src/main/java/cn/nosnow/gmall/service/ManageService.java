@@ -66,4 +66,15 @@ public interface ManageService {
      */
     List<SkuInfo> getSkuInfoListBySpu(String spuId);
 
+    /**
+     * 查询sku详情
+     * @param skuId
+     * @return
+     */
+    SkuInfo getSkuInfo(String skuId);
+
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(SkuInfo skuInfo);
+
+    List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
+
 }
