@@ -1,9 +1,6 @@
 package cn.nosnow.gmall1108.manage.controller;
 
-import cn.nosnow.gmall.bean.BaseAttrInfo;
-import cn.nosnow.gmall.bean.BaseCatalog1;
-import cn.nosnow.gmall.bean.BaseCatalog2;
-import cn.nosnow.gmall.bean.BaseCatalog3;
+import cn.nosnow.gmall.bean.*;
 import cn.nosnow.gmall.service.ManageService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Controller;
@@ -51,8 +48,16 @@ public class AttrManageController {
     /**获取属性列表*/
     @RequestMapping(value = "/getAttrList")
     @ResponseBody
-    public List<BaseAttrInfo> getAttrList(Map<String, String> map) {
+    public List<BaseAttrInfo> getAttrList(@RequestParam Map<String, String> map) {
         String catalog3Id = map.get("catalog3Id");
         return manageService.getAttrList(catalog3Id);
+    }
+
+
+    @RequestMapping(value = "/spuSaleAttrList")
+    @ResponseBody
+    public List<SpuSaleAttr> spuSaleAttrList(@RequestParam Map<String, String> map) {
+        String spuId = map.get("spuId");
+        return manageService.getSpuSaleAttrList(spuId);
     }
 }

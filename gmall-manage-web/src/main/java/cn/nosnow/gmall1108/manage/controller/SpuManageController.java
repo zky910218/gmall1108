@@ -1,5 +1,6 @@
 package cn.nosnow.gmall1108.manage.controller;
 
+import cn.nosnow.gmall.bean.SpuImage;
 import cn.nosnow.gmall.bean.SpuInfo;
 import cn.nosnow.gmall.service.ManageService;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -39,4 +40,14 @@ public class SpuManageController {
         return spuInfoList;
     }
 
+    /**
+     * 初始化商品图片
+     * @param spuId
+     * @return
+     */
+    @RequestMapping(value = "/spuImageList")
+    @ResponseBody
+    public List<SpuImage> getSpuImageList(@RequestParam("spuId") String spuId) {
+        return manageService.getSpuImageList(spuId);
+    }
 }

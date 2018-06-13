@@ -71,22 +71,57 @@
                                         }">
 
                 </select>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onclick="javascript:reloadSpuList()">刷新列表</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onclick="javascript:reloadAttrList()">刷新列表</a>
             </div>
         </div>
     </div>
 
      <div th:include="spuInfoPage"></div>
 
-    <!-- <div th:include="skuInfoPage"></div>
+    <div th:include="skuInfoPage"></div>
 
-     <div th:include="skuListPage"></div>-->
+     <div th:include="skuListPage"></div>
 </body>
 <script type="text/javascript">
 
+    /**增加一个spu*/
     function addSpuInfo(){
-        initSpuInfoDlg();
+        if(!checkBeforeDialog()){
+            return ;
+        }
+        initSpuInfoDlg(); // 在spuInfoPage.html中
     }
 
+    /**增加一个sku*/
+    function addSkuInfo() {
+        if(!checkBeforeDialog()){
+            return ;
+        }
+        initSkuInfoDlg();// 在skuInfoPage.html中
+    }
+
+    /**增加一个skuList*/
+    function showSkuInfoList() {
+        if(!checkBeforeDialog()){
+            return ;
+        }
+        var spuRow = $('#spulist_dg').datagrid('getSelected');
+        var ctg3val=$("#ctg3ForSpuList").combobox('getValue');
+        if(!spuRow){
+            $.messager.alert('警告','请先选择spu','warning');
+        }
+//        initSkuListDlg();
+        initSkuListDlg(spuRow.id,ctg3val);//在skuListPage.html中
+    }
+
+    /**增加选择校验*/
+    function checkBeforeDialog(){
+        var ctg3val = $("#ctg3ForSpuList").combobox('getValue');
+        if(ctg3val==''){
+            $.messager.alert('警告','请先选择三级分类','warning');
+            return false;
+        }
+        return true;
+    }
 </script>
 </html>

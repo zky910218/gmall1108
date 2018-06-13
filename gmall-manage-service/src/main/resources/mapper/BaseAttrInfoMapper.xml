@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.nosnow.gmall1108.manage.mapper.BaseAttrInfoMapper">
+
+    <!--
+        select标签中 id写方法名
+    -->
+    <select id="getBaseAttrInfoListByCatalog3Id" resultMap="baseAttrInfoMap">
+      SELECT
+      ai.id, ai.attr_name, ai.catalog3_id,
+      av.id attr_value_id, av.attr_id, av.value_name
+      FROM base_attr_info ai INNER JOIN base_attr_value av ON ai.id = av.attr_id
+      WHERE ai.catalog3_id = #{catalog3Id}
+    </select>
+
+    <!--
+        autoMapping
+    -->
+    <resultMap id="baseAttrInfoMap" type="cn.nosnow.gmall.bean.BaseAttrInfo" autoMapping="true">
+        <result column="id" property="id" />
+        <collection property="attrValueList" ofType="cn.nosnow.gmall.bean.BaseAttrValue" autoMapping="true">
+            <result property="id" column="attr_value_id" />
+        </collection>
+    </resultMap>
+</mapper>

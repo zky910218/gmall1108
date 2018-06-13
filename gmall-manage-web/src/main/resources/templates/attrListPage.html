@@ -146,14 +146,14 @@
         if(!checkBeforeDialog()){
             return ;
         }
+        //弹出框
+        $("#dlg").dialog("open");
         //进系统前先清空
         $("#attrId").val("");
         $("#attrName").textbox('clear');
         $('#dg_av').datagrid({url:''});
         // 初始化datagrid
         initAttrValueDatagrid();
-        //弹出框
-        $("#dlg").dialog("open");
     }
 
     /** 编辑按钮 */

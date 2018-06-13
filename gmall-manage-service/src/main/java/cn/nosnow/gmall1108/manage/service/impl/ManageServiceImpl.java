@@ -5,6 +5,7 @@ import cn.nosnow.gmall.service.ManageService;
 import cn.nosnow.gmall1108.manage.mapper.*;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -46,6 +47,18 @@ public class ManageServiceImpl implements ManageService {
     @Autowired
     private SpuSaleAttrValueMapper spuSaleAttrValueMapper;
 
+    @Autowired
+    private SkuInfoMapper skuInfoMapper;
+
+    @Autowired
+    private SkuImageMapper skuImageMapper;
+
+    @Autowired
+    private SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
+
     @Override
     public List<BaseCatalog1> getCatalog1() {
         return baseCatalog1Mapper.selectAll();
@@ -67,9 +80,7 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public List<BaseAttrInfo> getAttrList(String catalog3Id) {
-        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
-        baseAttrInfo.setCatalog3Id(catalog3Id);
-        return baseAttrInfoMapper.select(baseAttrInfo);
+        return baseAttrInfoMapper.getBaseAttrInfoListByCatalog3Id(Long.parseLong(catalog3Id));
     }
 
     @Override
@@ -142,5 +153,71 @@ public class ManageServiceImpl implements ManageService {
             }
 
         }
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrList(String spuId) {
+        return spuSaleAttrMapper.selectSpuSaleAttrList(Long.parseLong(spuId));
+    }
+
+    @Override
+    public List<SpuImage> getSpuImageList(String spuId) {
+        SpuImage spuImageQuery = new SpuImage();
+        spuImageQuery.setSpuId(spuId);
+        return spuImageMapper.select(spuImageQuery);
+    }
+
+    @Override
+    public void saveSkuInfo(SkuInfo skuInfo) {
+
+        /**保存skuINfo*/
+        if(skuInfo.getId() == null || skuInfo.getId().length() == 0){
+            skuInfo.setId(null);
+            skuInfoMapper.insertSelective(skuInfo);
+        } else {
+            skuInfoMapper.updateByPrimaryKeySelective(skuInfo);
+        }
+
+        /**保存skuImage*/
+        Example example=new Example(SkuImage.class);
+        example.createCriteria().andEqualTo("skuId",skuInfo.getId());
+        skuImageMapper.deleteByExample(example);
+        List<SkuImage> skuImageList = skuInfo.getSkuImageList();
+        for (SkuImage skuImage : skuImageList) {
+            skuImage.setSkuId(skuInfo.getId());
+            if(skuImage.getId()!=null && skuImage.getId().length()==0) {
+                skuImage.setId(null);
+            }
+            skuImageMapper.insertSelective(skuImage);
+        }
+
+        /**保存sku平台属性值关联表*/
+        Example skuAttrValueExample=new Example(SkuAttrValue.class);
+        skuAttrValueExample.createCriteria().andEqualTo("skuId",skuInfo.getId());
+        skuAttrValueMapper.deleteByExample(skuAttrValueExample);
+        List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
+        for (SkuAttrValue skuAttrValue : skuAttrValueList) {
+            skuAttrValue.setSkuId(skuInfo.getId());
+            if(skuAttrValue.getId()!=null&&skuAttrValue.getId().length()==0) {
+                skuAttrValue.setId(null);
+            }
+            skuAttrValueMapper.insertSelective(skuAttrValue);
+        }
+
+        /**保存sku销售属性值表*/
+        Example skuSaleAttrValueExample=new Example(SkuSaleAttrValue.class);
+        skuSaleAttrValueExample.createCriteria().andEqualTo("skuId",skuInfo.getId());
+        skuSaleAttrValueMapper.deleteByExample(skuSaleAttrValueExample);
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
+        for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
+            skuSaleAttrValue.setSkuId(skuInfo.getId());
+            skuSaleAttrValue.setId(null);
+            skuSaleAttrValueMapper.insertSelective(skuSaleAttrValue);
+        }
+    }
+
+    @Override
+    public List<SkuInfo> getSkuInfoListBySpu(String spuId) {
+        return skuInfoMapper.selectSkuInfoListBySpu(Long.parseLong(spuId));
     }
 }

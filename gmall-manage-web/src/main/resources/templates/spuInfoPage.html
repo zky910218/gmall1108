@@ -266,8 +266,14 @@
 
         /**将数据传入后台进行保存*/
         $.post('saveSpuInfo', spuInfoJson, function () {
-            
+            $("#spu_dlg").dialog("close");
+            $("#spulist_dg").datagrid("reload");
         });
+    }
+
+    /**关闭按钮*/
+    function closeSpu(){
+        $("#spu_dlg").dialog("close");
     }
 
 </script>

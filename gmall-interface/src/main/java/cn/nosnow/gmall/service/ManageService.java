@@ -39,4 +39,31 @@ public interface ManageService {
      */
     void saveSpuInfo(SpuInfo spuInfo);
 
+    /**
+     * 销售属性查询sql
+     * @param spuId
+     * @return
+     */
+    List<SpuSaleAttr> getSpuSaleAttrList(String spuId);
+
+    /**
+     * 根据spuId查询商品属性列表
+     * @param spuId
+     * @return
+     */
+    List<SpuImage> getSpuImageList(String spuId);
+
+    /**
+     * 保存sku
+     * @param skuInfo
+     */
+    void saveSkuInfo(SkuInfo skuInfo);
+
+    /**
+     * sku列表
+     * @param spuId
+     * @return
+     */
+    List<SkuInfo> getSkuInfoListBySpu(String spuId);
+
 }
